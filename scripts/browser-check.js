@@ -1,0 +1,52 @@
+(async () => {
+  const checks = [];
+  const wait = () => new Promise(resolve => setTimeout(resolve, 600));
+  const assert = (condition, name) => { if (!condition) throw new Error(name); checks.push(name); };
+  const click = name => {
+    const button = [...document.querySelectorAll('button')].find(el => el.getAttribute('aria-label') === name || el.textContent.trim() === name);
+    if (!button) throw new Error('Missing button: ' + name);
+    button.click();
+  };
+  const key = value => document.body.dispatchEvent(new KeyboardEvent('keydown', {key:value,bubbles:true}));
+  const reveals = () => [...document.querySelectorAll('.reveal')].filter(el => el.getAttribute('aria-hidden') === 'false');
+  click('Überblick'); await wait();
+  assert(reveals().length === 0, 'Slide starts with title only');
+  key('ArrowRight'); await wait();
+  assert(reveals().length === 1 && document.querySelector('h1').textContent.includes('Monolith'), 'First key reveals one item, not next slide');
+  key(' '); await wait();
+  assert(reveals().length === 3, 'Space reveals modular comparison');
+  key('ArrowLeft'); await wait();
+  assert(reveals().length === 1, 'Previous step hides later content');
+  click('Nächster Schritt'); await wait(); click('Nächster Schritt'); await wait();
+  assert(document.querySelector('.step-status').textContent === 'Schritt 4/4', 'Step indicator tracks reveal');
+  click('Nächster Schritt'); await wait();
+  assert(document.querySelector('h1').textContent.includes('Dach') && reveals().length === 0, 'Next slide resets reveal state');
+  key('ArrowLeft'); await wait();
+  assert(document.querySelector('.step-status').textContent === 'Schritt 4/4', 'Back across slide boundary restores completed slide');
+  click('Der Monolith'); await wait(); key('ArrowRight'); await wait();
+  assert(!document.querySelector('.is-open'), 'Monolith first appears closed');
+  key('ArrowRight'); await wait();
+  assert(!!document.querySelector('.is-open'), 'Next step opens monolith');
+  click('Modularität'); await wait(); key('ArrowRight'); await wait(); key('ArrowRight'); await wait();
+  assert(document.querySelectorAll('.is-modular .solid').length === 4, 'Next step splits into four modules');
+  click('C# in der Praxis'); await wait();
+  assert(reveals().length === 0, 'Direct navigation starts title only');
+  key('ArrowRight'); await wait(); key('ArrowRight'); await wait();
+  assert(!document.querySelector('.organized'), 'Target tree appears before reordering');
+  key(' '); await wait();
+  assert(document.querySelector('.organized').textContent.includes('Shared/'), 'Space reorganizes files');
+  key('ArrowLeft'); await wait();
+  assert(!document.querySelector('.organized'), 'Reordering reverses');
+  click('Fazit'); await wait();
+  assert(!document.querySelector('[aria-label="Nächster Schritt"]').disabled, 'Last slide still allows reveals');
+  for(let i=0;i<3;i++){key('ArrowRight');await wait();}
+  assert(document.querySelector('[aria-label="Nächster Schritt"]').disabled, 'Final step is bounded');
+  assert(reveals().length === 3, 'Conclusion shows three short statements');
+  key('n');await wait();
+  assert(document.querySelector('.notes-body p').textContent.length>400, 'Full explanation remains in notes');
+  key('Escape');await wait(); click('Überblick');await wait();
+  assert(document.querySelector('[aria-label="Vorheriger Schritt"]').disabled, 'First step is bounded');
+  assert([...document.querySelectorAll('.reveal[aria-hidden="true"]')].every(el=>el.inert), 'Hidden content is not interactive');
+  assert(document.documentElement.scrollWidth<=innerWidth, 'No horizontal overflow');
+  return checks;
+})()

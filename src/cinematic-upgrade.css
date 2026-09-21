@@ -1,0 +1,361 @@
+.presentation {
+  background-image:
+    linear-gradient(180deg, #01040d 0%, #030b18 44%, #02050d 100%),
+    radial-gradient(ellipse at 16% 72%, #ff6b1d38 0%, transparent 34%),
+    radial-gradient(ellipse at 84% 72%, #00bfe63d 0%, transparent 36%),
+    linear-gradient(90deg, #030812, #071827 50%, #030912);
+  background-position: center, center, center, center;
+  background-size: auto, 120% 100%, 120% 100%, auto;
+  background-attachment: scroll;
+}
+
+.presentation::before {
+  background:
+    linear-gradient(90deg, transparent, #ff9d3d08 28%, transparent 45%, #22d9ff0b 73%, transparent),
+    repeating-linear-gradient(90deg, transparent 0, transparent calc(12.5% - 1px), #76d8ff0b 12.5%, transparent calc(12.5% + 1px)),
+    repeating-linear-gradient(0deg, transparent 0, transparent calc(16.66% - 1px), #76d8ff08 16.66%, transparent calc(16.66% + 1px));
+  background-size: 100% 100%;
+  mix-blend-mode: screen;
+  animation: blueprint-drift 22s linear infinite;
+}
+
+.presentation::after {
+  background:
+    linear-gradient(180deg, transparent 0 54%, #00c9ff12 54.2%, transparent 55%),
+    radial-gradient(ellipse at 50% 60%, transparent 18%, #010611a6 78%),
+    linear-gradient(90deg, transparent 49.94%, #68dfff24 50%, transparent 50.06%);
+  box-shadow: inset 0 0 160px #000b;
+}
+
+.presentation::before {
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 9.8vw, #55d7ff12 9.9vw 10vw),
+    repeating-linear-gradient(0deg, transparent 0 7.8vh, #55d7ff10 7.9vh 8vh),
+    linear-gradient(90deg, transparent, #ff7b2d12 33%, transparent 47%, #00d9ff12 72%, transparent);
+  background-size: 100% 100%;
+  perspective: 700px;
+}
+
+.presentation .ambient {
+  z-index: -1;
+  opacity: .9;
+  background:
+    radial-gradient(ellipse at 16% 70%, #ff8d3524 0%, transparent 30%),
+    radial-gradient(ellipse at 84% 68%, #18cfff26 0%, transparent 34%);
+  animation: horizon-breathe 10s ease-in-out infinite alternate;
+}
+
+.presentation .ambient::before,
+.presentation .ambient::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+}
+
+.presentation .ambient::before {
+  background: conic-gradient(from 208deg at 48% 92%, transparent 0deg, #ff9b3d12 18deg, transparent 39deg, #28d9ff10 68deg, transparent 92deg);
+  filter: blur(18px);
+  animation: light-sweep 18s ease-in-out infinite alternate;
+}
+
+.presentation .ambient::after {
+  background: radial-gradient(ellipse at 50% 87%, #a8efff1c 0%, transparent 24%);
+  filter: blur(28px);
+  animation: horizon-glow 7s ease-in-out infinite alternate;
+}
+
+.ambient i {
+  width: 3px;
+  height: 3px;
+  opacity: .34;
+  box-shadow: 0 0 9px currentColor;
+  animation-name: cinematic-particle;
+  animation-duration: 14s;
+}
+
+.architecture-render {
+  overflow: visible;
+  filter: drop-shadow(0 22px 35px #0008);
+}
+
+.architecture-render::before {
+  display: none;
+  content: '';
+  position: absolute;
+  inset: 24px 7% 34px;
+  z-index: 3;
+  pointer-events: none;
+  border: 1px solid #8eeaff1c;
+  background:
+    linear-gradient(90deg, transparent 49.8%, #7feaff26 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, #7feaff1d 50%, transparent 50.2%);
+  box-shadow: inset 0 0 45px #00bfff0d, 0 0 35px #00bfff0c;
+  animation: frame-breathe 5s ease-in-out infinite alternate;
+}
+
+.architecture-render::after {
+  display: none;
+  content: 'LIVE SYSTEM / 3D CORE';
+  position: absolute;
+  right: 10%;
+  top: 31px;
+  z-index: 4;
+  pointer-events: none;
+  color: #8bdff5a8;
+  font: 700 7px/1.2 'DM Sans', sans-serif;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px #00cfff;
+}
+
+.architecture-canvas {
+  filter: saturate(1.18) contrast(1.08);
+}
+
+.hero-comparison {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-comparison::before {
+  content: 'SYSTEM ARCHITECTURE / VISUAL COMPARISON';
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #7fb9ca88;
+  font: 700 7px/1 'DM Sans', sans-serif;
+  letter-spacing: 3px;
+  white-space: nowrap;
+}
+
+.hero-object .object-caption {
+  min-height: 78px;
+  align-items: center;
+  border-radius: 4px 16px 16px 4px;
+  background: linear-gradient(105deg, #08121ee8, #071a2bd4 55%, #03101ce8);
+  box-shadow: inset 0 1px 0 #d4f7ff18, 0 18px 45px #0005;
+}
+
+.hero-object:last-child .object-caption {
+  border-radius: 16px 4px 4px 16px;
+}
+
+.hero-object .object-caption h2 {
+  letter-spacing: -.8px;
+  text-shadow: 0 0 20px #b5efff32;
+}
+
+.hero-object .tag {
+  color: #a8eaff;
+  border-color: #5bdcff55;
+  background: #0b9bd51a;
+  box-shadow: inset 0 0 14px #00bfff0c, 0 0 16px #00bfff12;
+}
+
+.hero-object:first-child .tag {
+  color: #ffc28b;
+  border-color: #ff9b4b66;
+  background: #ff6d1b16;
+}
+
+.bottom-insight {
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  font-size: 10px !important;
+}
+
+header,
+footer {
+  backdrop-filter: blur(12px);
+  background: linear-gradient(90deg, #02081244, transparent 50%, #02081244);
+}
+
+.brand-icon,
+.icon-button,
+.arrow-button {
+  box-shadow: inset 0 0 18px #43dfff0b, 0 0 18px #00bfff0a;
+}
+
+.hero-object:first-child .architecture-render {
+  filter: drop-shadow(0 18px 28px #ff6b2638);
+}
+
+.hero-object:last-child .architecture-render {
+  filter: drop-shadow(0 18px 32px #00bfff45);
+}
+
+@keyframes blueprint-drift {
+  from { background-position: 0 0, 0 0, 0 0; }
+  to { background-position: 0 0, 80px 0, 0 70px; }
+}
+
+@keyframes light-sweep {
+  from { transform: translate3d(-4%, 2%, 0) rotate(-2deg) scale(1.02); opacity: .55; }
+  to { transform: translate3d(4%, -2%, 0) rotate(2deg) scale(1.08); opacity: 1; }
+}
+
+@keyframes horizon-breathe {
+  from { opacity: .58; transform: scale(1); }
+  to { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes horizon-glow {
+  from { opacity: .35; transform: translateX(-3%); }
+  to { opacity: .85; transform: translateX(3%); }
+}
+
+@keyframes cinematic-particle {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .08; }
+  50% { transform: translate3d(14px, -28px, 0); opacity: .7; }
+}
+
+@keyframes frame-breathe {
+  from { opacity: .42; transform: scale(.985); }
+  to { opacity: .9; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presentation::before { animation: none; }
+}
+
+@media (max-width: 700px) {
+  .presentation { background-attachment: scroll; }
+  .hero-comparison::before,
+  .architecture-render::after { display: none; }
+  .architecture-render::before { inset: 28px 0 34px; }
+}
+
+/* Apple-style keynote finish: calmer surfaces, generous radii, and less HUD noise. */
+@media (min-width: 701px) {
+  body { overflow: hidden; }
+}
+
+.presentation {
+  background-image:
+    radial-gradient(ellipse at 50% 18%, #17324a 0%, transparent 42%),
+    radial-gradient(ellipse at 14% 76%, #7e3b1f2e 0%, transparent 32%),
+    radial-gradient(ellipse at 86% 76%, #0d6a962e 0%, transparent 32%),
+    linear-gradient(180deg, #02050b 0%, #071321 52%, #02050b 100%);
+}
+
+.presentation::before {
+  opacity: .58;
+  background-image:
+    linear-gradient(90deg, transparent 0 49.95%, #d9f6ff13 50%, transparent 50.05%),
+    radial-gradient(ellipse at 50% 85%, #c5f1ff12 0%, transparent 29%);
+  animation: apple-atmosphere 18s ease-in-out infinite alternate;
+}
+
+.presentation::after {
+  box-shadow: inset 0 0 190px #000c;
+  background: radial-gradient(ellipse at 50% 42%, transparent 20%, #00081775 78%);
+}
+
+.hero-comparison::before,
+.architecture-render::after {
+  display: none;
+}
+
+.slide-heading::after {
+  display: none;
+}
+
+.hero-comparison {
+  margin-top: 30px;
+}
+
+.architecture-render::before {
+  border-color: #d9f7ff24;
+  border-radius: 26px;
+  background: radial-gradient(ellipse at center, #a8edff0a, transparent 65%);
+  box-shadow: inset 0 0 55px #b3eeff12, 0 0 45px #7bddff10;
+}
+
+.hero-object .object-caption {
+  border: 1px solid #d5f4ff18;
+  border-top-color: #d9f7ff55;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ffffff0d, #071321cc 70%);
+  box-shadow: inset 0 1px 0 #ffffff18, 0 24px 55px #0006;
+  backdrop-filter: blur(24px) saturate(1.25);
+}
+
+.hero-object:last-child .object-caption,
+.hero-object:first-child .object-caption {
+  border-radius: 18px;
+}
+
+.hero-object .object-caption h2 {
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.hero-object .tag,
+.hero-object:first-child .tag {
+  color: #e6f9ff;
+  border-color: #d5f4ff35;
+  background: #ffffff0b;
+  border-radius: 999px;
+  letter-spacing: 2px;
+}
+
+.slide .bottom-insight {
+  border-color: #d5f4ff24;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #ffffff0b, #0d2740cc 50%, #ffffff0b);
+  box-shadow: inset 0 1px 0 #ffffff16, 0 18px 45px #0005;
+  backdrop-filter: blur(22px);
+}
+
+.module-panel {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.module-panel .boundary-label {
+  display: none;
+}
+
+header,
+footer {
+  border-color: #e5f9ff16;
+  background: #02060dcc;
+  box-shadow: 0 10px 35px #0002;
+}
+
+.brand-icon {
+  border-color: #d7f7ff4d;
+  border-radius: 12px;
+  color: #e7fbff;
+}
+
+.arrow-button.next {
+  background: linear-gradient(145deg, #f5feff, #87ddf4 52%, #32a5d4);
+  box-shadow: 0 0 28px #75dfff55, inset 0 1px 0 #fff;
+}
+
+@keyframes apple-atmosphere {
+  from { transform: scale(1); opacity: .42; }
+  to { transform: scale(1.06); opacity: .9; }
+}
+
+/* Keep the presentation smooth on high-DPI screens without changing its look. */
+.architecture-render {
+  contain: layout style;
+}
+
+.architecture-canvas {
+  will-change: opacity;
+}
+
+.presentation .ambient {
+  contain: strict;
+}
+
+.ambient i {
+  will-change: transform, opacity;
+}
