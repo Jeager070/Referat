@@ -10,17 +10,17 @@
   const key = value => document.body.dispatchEvent(new KeyboardEvent('keydown', {key:value,bubbles:true}));
   const reveals = () => [...document.querySelectorAll('.reveal')].filter(el => el.getAttribute('aria-hidden') === 'false');
   click('Überblick'); await wait();
-  assert(reveals().length === 0, 'Slide starts with title only');
+  assert(reveals().length === 1, 'Overview starts with the closed monolith');
   key('ArrowRight'); await wait();
-  assert(reveals().length === 1 && document.querySelector('h1').textContent.includes('Monolith'), 'First key reveals one item, not next slide');
+  assert(reveals().length === 3 && document.querySelector('h1').textContent.includes('Monolith'), 'First key reveals one item, not next slide');
   key(' '); await wait();
   assert(reveals().length === 3, 'Space reveals modular comparison');
   key('ArrowLeft'); await wait();
-  assert(reveals().length === 1, 'Previous step hides later content');
+  assert(document.querySelector('.step-status').textContent === 'Schritt 2/4', 'Previous step restores the preceding step');
   click('Nächster Schritt'); await wait(); click('Nächster Schritt'); await wait();
   assert(document.querySelector('.step-status').textContent === 'Schritt 4/4', 'Step indicator tracks reveal');
   click('Nächster Schritt'); await wait();
-  assert(document.querySelector('h1').textContent.includes('Dach') && reveals().length === 0, 'Next slide resets reveal state');
+  assert(document.querySelector('h1').textContent.includes('Dach') && reveals().length === 1, 'Next slide resets reveal state');
   key('ArrowLeft'); await wait();
   assert(document.querySelector('.step-status').textContent === 'Schritt 4/4', 'Back across slide boundary restores completed slide');
   click('Der Monolith'); await wait(); key('ArrowRight'); await wait();
@@ -28,7 +28,7 @@
   key('ArrowRight'); await wait();
   assert(!!document.querySelector('.is-open'), 'Next step opens monolith');
   click('Modularität'); await wait(); key('ArrowRight'); await wait(); key('ArrowRight'); await wait();
-  assert(document.querySelectorAll('.is-modular .solid').length === 4, 'Next step splits into four modules');
+  assert(document.querySelectorAll('.is-modular .architecture-block').length === 4, 'Next step splits into four modules');
   click('C# in der Praxis'); await wait();
   assert(reveals().length === 0, 'Direct navigation starts title only');
   key('ArrowRight'); await wait(); key('ArrowRight'); await wait();
@@ -48,5 +48,11 @@
   assert(document.querySelector('[aria-label="Vorheriger Schritt"]').disabled, 'First step is bounded');
   assert([...document.querySelectorAll('.reveal[aria-hidden="true"]')].every(el=>el.inert), 'Hidden content is not interactive');
   assert(document.documentElement.scrollWidth<=innerWidth, 'No horizontal overflow');
+  key('ArrowRight'); await wait();
+  const labels = [...document.querySelectorAll('.is-modular .block-label')];
+  assert(labels.length === 4 && labels.every(el => getComputedStyle(el).opacity === '1'), 'All module labels are visible text');
+  assert(labels.every(el => el.scrollWidth <= el.clientWidth), 'Module labels fit without clipping');
+  assert(document.querySelectorAll('canvas').length === 0, 'Cubes need no continuous WebGL rendering');
+  assert(!document.getAnimations().some(animation => animation.effect.getTiming().iterations === Infinity), 'Idle slide has no endless animations');
   return checks;
 })()

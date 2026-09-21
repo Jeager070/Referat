@@ -359,3 +359,30 @@ footer {
 .ambient i {
   will-change: transform, opacity;
 }
+
+/* Keep idle slides static so navigation has the rendering budget. */
+.presentation::before,
+.presentation .ambient,
+.presentation .ambient::before,
+.presentation .ambient::after,
+.ambient i,
+.slide-heading em,
+.object-caption::after,
+.versus::after,
+.bottom-insight::after,
+.conclusion::after,
+.verdict-art {
+  animation: none;
+  will-change: auto;
+}
+.presentation .ambient::before,
+.presentation .ambient::after { display: none; }
+.hero-object .object-caption,
+.slide .bottom-insight,
+.points article,
+.code-window,
+.verdict-card,
+header,
+footer { backdrop-filter: none; }
+.reveal { will-change: auto; }
+body { overflow: auto; }

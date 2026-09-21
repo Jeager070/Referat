@@ -7,8 +7,8 @@ export const lastSteps = [3, 4, 4, 4, 3];
 function Reveal({ show, children, className = '' }) {
   const reduced = useReducedMotion();
   return <motion.div className={`reveal ${className}`} aria-hidden={!show} inert={!show ? true : undefined}
-    initial={false} animate={{ opacity: show ? 1 : 0, y: show || reduced ? 0 : 24, scale: show || reduced ? 1 : .965, filter: show || reduced ? 'blur(0px)' : 'blur(8px)' }}
-    transition={{ duration: reduced ? .15 : .65, ease: [.16, 1, .3, 1] }}
+    initial={false} animate={{ opacity: show ? 1 : 0, y: show || reduced ? 0 : 24 }}
+    transition={{ duration: reduced ? 0 : .25, ease: [.16, 1, .3, 1] }}
     style={{ visibility: show ? 'visible' : 'hidden', pointerEvents: show ? 'auto' : 'none' }}>
     {children}
   </motion.div>;
