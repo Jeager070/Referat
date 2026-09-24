@@ -1,6 +1,6 @@
 (async () => {
   const checks = [];
-  const wait = () => new Promise(resolve => setTimeout(resolve, 600));
+  const wait = () => new Promise(resolve => setTimeout(resolve, 1800));
   const assert = (condition, name) => { if (!condition) throw new Error(name); checks.push(name); };
   const click = name => {
     const button = [...document.querySelectorAll('button')].find(el => el.getAttribute('aria-label') === name || el.textContent.trim() === name);
@@ -20,15 +20,15 @@
   click('Nächster Schritt'); await wait(); click('Nächster Schritt'); await wait();
   assert(document.querySelector('.step-status').textContent === 'Schritt 4/4', 'Step indicator tracks reveal');
   click('Nächster Schritt'); await wait();
-  assert(document.querySelector('h1').textContent.includes('Dach') && reveals().length === 1, 'Next slide resets reveal state');
+  assert(document.querySelector('h1').textContent.includes('Dach') && !!document.querySelector('.sequence-render'), 'Next slide resets reveal state');
   key('ArrowLeft'); await wait();
   assert(document.querySelector('.step-status').textContent === 'Schritt 4/4', 'Back across slide boundary restores completed slide');
   click('Der Monolith'); await wait(); key('ArrowRight'); await wait();
-  assert(!document.querySelector('.is-open'), 'Monolith first appears closed');
+  assert(!!document.querySelector('.glass-scene[data-opened=true]'), 'First monolith advance opens the layers without an empty step');
   key('ArrowRight'); await wait();
-  assert(!!document.querySelector('.is-open'), 'Next step opens monolith');
+  assert(!!document.querySelector('.glass-scene[data-opened=true]'), 'Next step opens monolith');
   click('Modularität'); await wait(); key('ArrowRight'); await wait(); key('ArrowRight'); await wait();
-  assert(document.querySelectorAll('.is-modular .architecture-block').length === 4, 'Next step splits into four modules');
+  assert(document.querySelectorAll('.sequence-render .module-label').length === 4, 'Next step splits into four modules');
   click('C# in der Praxis'); await wait();
   assert(reveals().length === 0, 'Direct navigation starts title only');
   key('ArrowRight'); await wait(); key('ArrowRight'); await wait();
@@ -49,10 +49,11 @@
   assert([...document.querySelectorAll('.reveal[aria-hidden="true"]')].every(el=>el.inert), 'Hidden content is not interactive');
   assert(document.documentElement.scrollWidth<=innerWidth, 'No horizontal overflow');
   key('ArrowRight'); await wait();
-  const labels = [...document.querySelectorAll('.is-modular .block-label')];
+  await new Promise(resolve => setTimeout(resolve, 1800));
+  const labels = [...document.querySelectorAll('.glass-scene[data-mode=split] .module-label')];
   assert(labels.length === 4 && labels.every(el => getComputedStyle(el).opacity === '1'), 'All module labels are visible text');
   assert(labels.every(el => el.scrollWidth <= el.clientWidth), 'Module labels fit without clipping');
-  assert(document.querySelectorAll('canvas').length === 0, 'Cubes need no continuous WebGL rendering');
+  assert([...document.querySelectorAll('.glass-scene')].every(el => el.dataset.status === 'ready' && el.dataset.animating === 'false'), 'Glass renderers settle after the transition');
   assert(!document.getAnimations().some(animation => animation.effect.getTiming().iterations === Infinity), 'Idle slide has no endless animations');
   return checks;
 })()

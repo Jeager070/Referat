@@ -1,6 +1,6 @@
 # Monolith ↔ Modular
 
-Interaktive deutsche React-Keynote für ein fünfminütiges Referat. React, Framer Motion, CSS-3D, Vite. Kein Backend nötig.
+Interaktive deutsche React-Keynote für ein fünfminütiges Referat. React, Framer Motion, Three.js und Vite. Kein Backend nötig.
 
 ## Starten
 
@@ -21,11 +21,11 @@ Die angezeigte lokale Adresse im Browser öffnen. Produktionsversion: `npm run b
 - O: Abschnittsübersicht
 - Escape: Übersicht und Sprechzettel schließen
 - Abschnitt 2: Block erscheint, öffnet sich, dann folgen kurze Kernaussagen
-- Abschnitt 3: Block erscheint und teilt sich beim Weiterklicken in Module
+- Abschnitt 3: Die bestehende 3D-Szene zeigt fachliche Grenzen, trennt die Glasmodule, verbindet ihre Schnittstellen und zeigt das gemeinsame Deployment.
 - Abschnitt 4: C#-Dateistrukturen erscheinen nacheinander und ordnen sich beim Weiterklicken um
 
 Der Sprechzettel ist auf demselben Bildschirm sichtbar; vor einer Bildschirmfreigabe ausblenden. Der Timer läuft dabei weiter. Folienwechsel erfolgen manuell. Auf kleinen Bildschirmen darf der Inhalt scrollen, damit alles lesbar bleibt. Auf Präsentationsbildschirmen dient die Ansicht als Keynote.
 
 Die Präsentation vergleicht wenig gegliederte und modular aufgebaute Anwendungen. Ein modularer Monolith ist weiterhin eine gemeinsame Bereitstellungseinheit. Module bedeuten weder automatisch Microservices noch unabhängige Skalierung oder Fehlerisolation. Ordnerstrukturen illustrieren Zuständigkeiten; Schnittstellen und Abhängigkeitsregeln müssen zusätzlich umgesetzt werden.
 
-Schriftarten werden über Google Fonts geladen; bei fehlendem Internet greifen lokale Ersatzschriften. Die 3D-Elemente werden direkt im Browser dargestellt.
+Schriftarten werden über Google Fonts geladen; bei fehlendem Internet greifen lokale Ersatzschriften. Die Glasobjekte werden mit WebGL direkt im Browser dargestellt. Three.js wird separat geladen; die Szene rendert nur während Übergängen, Größenänderungen und Mausbewegungen. Im Hintergrund und im Stillstand pausiert sie. Die Pixeldichte ist auf 1,5 begrenzt. Die Einstellung „Bewegung reduzieren“ wird berücksichtigt. Ohne WebGL erscheint eine beschriftete Ersatzgrafik.

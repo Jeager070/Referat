@@ -2,13 +2,13 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Box, Code2, Grid2X2, Layers3, Zap, Workflow, Sparkles, Component } from 'lucide-react';
 
-export const lastSteps = [3, 4, 4, 4, 3];
+export const lastSteps = [3, 4, 3, 4, 3];
 
 function Reveal({ show, children, className = '' }) {
   const reduced = useReducedMotion();
   return <motion.div className={`reveal ${className}`} aria-hidden={!show} inert={!show ? true : undefined}
     initial={false} animate={{ opacity: show ? 1 : 0, y: show || reduced ? 0 : 24 }}
-    transition={{ duration: reduced ? 0 : .25, ease: [.16, 1, .3, 1] }}
+    transition={{ duration: reduced ? 0 : .5, ease: [.16, 1, .3, 1] }}
     style={{ visibility: show ? 'visible' : 'hidden', pointerEvents: show ? 'auto' : 'none' }}>
     {children}
   </motion.div>;
@@ -24,40 +24,31 @@ function Point({ show, number, children }) {
   return <Reveal show={show}><article><span className="point-icon"><Icon size={26} strokeWidth={1.4}/></span><h2>{children}</h2><span className="point-number">{number}</span></article></Reveal>;
 }
 
-function Overview({ step, Cube }) {
+function Overview({ step, Cube, animated }) {
   return <><Heading number="01" kicker="ZWEI ANSÄTZE. EIN SYSTEM." title="Monolith" accent="↔ Modular"/>
     <div className="hero-comparison">
-      <Reveal show={step >= 0} className="hero-object"><Cube/><div className="object-caption"><h2>Ein großes Ganzes.</h2><span className="tag">MONOLITHISCH</span></div></Reveal>
+      <Reveal show={step >= 0} className="hero-object"><Cube animated={animated}/><div className="object-caption"><h2>Ein großes Ganzes.</h2><span className="tag">MONOLITHISCH</span></div></Reveal>
       <Reveal show={step >= 1} className="versus"><span/><ArrowRight size={25}/><span/></Reveal>
-      <Reveal show={step >= 1} className="hero-object"><Cube modular/><div className="object-caption"><h2>Klare Bausteine.</h2><span className="tag green">MODULAR</span></div></Reveal>
+      <Reveal show={step >= 1} className="hero-object"><Cube modular animated={animated} active={step >= 1}/><div className="object-caption"><h2>Klare Bausteine.</h2><span className="tag green">MODULAR</span></div></Reveal>
     </div>
     <Reveal show={step >= 3} className="bottom-insight"><span className="live-dot"/> Gleiche Funktionen. Andere Struktur.</Reveal>
   </>;
 }
 
-function Monolith({ step, Cube }) {
-  return <><Heading number="02" kicker="DER MONOLITH" title="Alles unter" accent="einem Dach."/>
+function ArchitectureSequence({ step, Cube, index, animated }) {
+  const modular = index === 2;
+  const phase = modular ? (step === 0 ? 'partition' : step === 1 ? 'split' : step === 2 ? 'connected' : 'deployment') : 'monolith';
+  return <><Heading key={index} number={modular ? '03' : '02'} kicker={modular ? 'MODULAR AUFGEBAUT' : 'DER MONOLITH'} title={modular ? 'Eine Anwendung.' : 'Alles unter'} accent={modular ? 'Klare Aufgaben.' : 'einem Dach.'}/>
     <div className="detail-layout">
-      <Reveal show={step >= 0} className="visual-panel"><Cube opened={step >= 2}/></Reveal>
-      <div className="points staged-points">
-        <Point show={step >= 2} number="01">Eine Anwendung.</Point>
-        <Point show={step >= 3} number="02">Einfach starten.</Point>
-        <Point show={step >= 4} number="03">Wachstum braucht Ordnung.</Point>
+      <div className={`visual-panel architecture-sequence ${modular ? 'module-panel' : ''}`} data-phase={phase}>
+        <div className="boundary-label" aria-hidden={!modular}><span className="live-dot"/> SHOPAPP · EINE ANWENDUNG</div>
+        <Cube sequence phase={phase} opened={!modular && step >= 1} animated={animated}/>
+        <div className="phase-caption" aria-live="polite">{modular ? ['Fachliche Grenzen werden sichtbar.', 'Vier Aufgaben. Vier Module.', 'Zusammenarbeit über Schnittstellen.', 'Gemeinsam bereitstellen.'][step] : step >= 1 ? 'Ein Blick in die Anwendung.' : 'Eine gemeinsame Anwendung.'}</div>
       </div>
-    </div>
-  </>;
-}
-
-function Modular({ step, Cube }) {
-  return <><Heading number="03" kicker="MODULAR AUFGEBAUT" title="Eine Anwendung." accent="Klare Aufgaben."/>
-    <div className="detail-layout">
-      <Reveal show={step >= 0} className="visual-panel module-panel">
-        <div className="boundary-label"><span className="live-dot"/> SHOPAPP · EINE ANWENDUNG</div><Cube modular={step >= 2}/>
-      </Reveal>
       <div className="points staged-points">
-        <Point show={step >= 2} number="01">Ein Modul. Eine Aufgabe.</Point>
-        <Point show={step >= 3} number="02">Klare Schnittstellen.</Point>
-        <Point show={step >= 4} number="03">Ein gemeinsames Deployment.</Point>
+        <Point show={step >= (modular ? 1 : 2)} number="01">{modular ? 'Ein Modul. Eine Aufgabe.' : 'Eine Anwendung.'}</Point>
+        <Point show={step >= (modular ? 2 : 3)} number="02">{modular ? 'Klare Schnittstellen.' : 'Einfach starten.'}</Point>
+        <Point show={step >= (modular ? 3 : 4)} number="03">{modular ? 'Ein gemeinsames Deployment.' : 'Wachstum braucht Ordnung.'}</Point>
       </div>
     </div>
   </>;
@@ -102,4 +93,5 @@ function Conclusion({ step }) {
   </>;
 }
 
-export const slides = [Overview, Monolith, Modular, Practice, Conclusion];
+const MemoArchitectureSequence = React.memo(ArchitectureSequence);
+export const slides = [React.memo(Overview), MemoArchitectureSequence, MemoArchitectureSequence, React.memo(Practice), React.memo(Conclusion)];
